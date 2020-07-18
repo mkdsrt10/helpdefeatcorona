@@ -46,12 +46,13 @@ class Dashboard extends React.Component {
 				fatiguetiredness: "",
 				none9:"",
 			},
-			vitals_data: {	
+			vitals_data: {
 				heartratefeeling: "",
 				heartrate: "",
 				bloodpressure1: "",
 				oxygensaturation: "",
 				bodytemperature: "",
+				temptype: true,
 				fever1: "",
 			},
 			personal_data: {
@@ -59,7 +60,7 @@ class Dashboard extends React.Component {
 				exposed:"",
 				foundanyone:"",
 				feeling:"",
-				pic:"",
+				// pic:"",
 			},
 			clientid: "",
 			data:"",
@@ -82,7 +83,7 @@ class Dashboard extends React.Component {
 	}
 
 	personalDone = () => {
-		this.setState({personal: 1}) 
+		this.setState({personal: 1})
 	}
 
 	symptomsDone = () => {
@@ -108,7 +109,7 @@ class Dashboard extends React.Component {
 		if (this.state.vitals==1 && this.state.personal==1) {
 			this.setState({route:"wait"})
 		} else {
-			this.onRouteChange("personal")	
+			this.onRouteChange("personal")
 		}
 	}
 
@@ -116,6 +117,7 @@ class Dashboard extends React.Component {
 		this.setState({vitals: 1})
 		this.setState({vitals_data: {
 			bodytemperature: input.temp,
+			temptype: input.temptype,
 			bloodpressure1: input.bp,
 			heartratefeeling: input.heart,
 			heartrate: input.heart_rate,
@@ -126,7 +128,7 @@ class Dashboard extends React.Component {
 		if (this.state.symptoms==1 && this.state.personal==1) {
 			this.setState({route:"wait"})
 		} else {
-			this.onRouteChange("symptoms")	
+			this.onRouteChange("symptoms")
 		}
 	}
 
@@ -137,7 +139,7 @@ class Dashboard extends React.Component {
 			traveltoday: (input.travel==="true"),
 			foundanyone: (input.known_found==="true"),
 			exposed: (input.risk_person==="true"),
-			pic: input.picture,
+			// pic: input.picture,
 			feeling: (input.happy==="true"),
 		}})
 		console.log(this.state)
@@ -170,6 +172,7 @@ class Dashboard extends React.Component {
 					}})
 					this.setState({vitals_data: {
 						bodytemperature: res.bodytemperature,
+						temptype: res.temptype,
 						bloodpressure1: res.bloodpressure1,
 						heartratefeeling: res.heartratefeeling,
 						heartrate: res.heartrate,
@@ -180,7 +183,7 @@ class Dashboard extends React.Component {
 						traveltoday: res.traveltoday,
 						foundanyone: res.foundanyone,
 						exposed: res.exposed,
-						pic: res.pic,
+						// pic: res.pic,
 						feeling: res.feeling,
 					}})
 				})
@@ -228,6 +231,7 @@ class Dashboard extends React.Component {
 						}})
 						this.setState({vitals_data: {
 							bodytemperature: res.bodytemperature,
+							temptype: res.temptype,
 							bloodpressure1: res.bloodpressure1,
 							heartratefeeling: res.heartratefeeling,
 							heartrate: res.heartrate,
@@ -238,7 +242,7 @@ class Dashboard extends React.Component {
 							traveltoday: res.traveltoday,
 							foundanyone: res.foundanyone,
 							exposed: res.exposed,
-							pic: res.pic,
+							// pic: res.pic,
 							feeling: res.feeling,
 						}})
 
@@ -271,7 +275,7 @@ class Dashboard extends React.Component {
 			} else {
 				back = <BackButton onRouteChange={this.onRouteChange}/>
 				output = <VitalForm refreshCalendar={this.refreshCalendar} vitals={this.state.vitals} symptoms={this.state.symptoms} personal={this.state.personal} clientid={this.state.clientid} onVitalsUpdate={this.onVitalsUpdate} Dated={this.state.day} Month={this.state.month} data = {this.state.vitals_data}/>
-			} 
+			}
 		} else if (this.state.route === "symptoms") {
 			if (this.state.vitals == 1 && this.state.personal == 1 && this.state.symptoms == 1) {
 				if (this.state.prevroute=="pred") {
@@ -334,12 +338,13 @@ class Dashboard extends React.Component {
 					</div>
 					</BrowserView>
 				<MobileView>
-					<div style={{"margin":"auto", width: "80vw"}}>
+					<div style={{"margin":"auto", display: 'flex', flexDirection: 'row'}}>
 						<List symptoms = {this.state.symptoms} personal = {this.state.personal} vitals = {this.state.vitals} onRouteChange={this.onRouteChange} route={this.state.route}/>
+						<Table clientid={this.state.clientid} ref = {this.child} onDateChange={this.onDateChange} daily={this.state.daily} personal = {this.state.personal} vitals = {this.state.vitals} vitalDone={this.vitalDone} personalDone={this.personalDone} symptomsDone={this.symptomsDone}/>
 					</div>
-					<div style={{width:"350px", margin:"auto"}}>
-					  	<Table clientid={this.state.clientid} ref = {this.child} onDateChange={this.onDateChange} daily={this.state.daily} personal = {this.state.personal} vitals = {this.state.vitals} vitalDone={this.vitalDone} personalDone={this.personalDone} symptomsDone={this.symptomsDone}/>
-					</div>
+					{/*<div style={{width:"350px", margin:"auto"}}>*/}
+					{/**/}
+					{/*</div>*/}
 					<div style={{"margin":"auto","margin-top":"10px","padding-bottom":"50px", width: "90vw"}}>
 						{output}
 					</div>
@@ -348,7 +353,7 @@ class Dashboard extends React.Component {
 		);
 	}
 }
-  
+
 
 
 export default Dashboard

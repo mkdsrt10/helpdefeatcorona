@@ -11,6 +11,7 @@ class VitalForm extends React.Component {
 			personal:"",
 			fever: "",
 			temp: "",
+			temptype: true,
 			heart: "",
 			heart_rate: "",
 			oxygen: "",
@@ -25,11 +26,11 @@ class VitalForm extends React.Component {
 	onOptionClick = (e) => {
 		let x = e.target.id
 		if (x==="yes") {
-			this.setState({[e.target.name]: true})	
+			this.setState({[e.target.name]: true})
 		} else {
 			this.setState({[e.target.name]: false})
 		}
-		
+
 	}
 
 	onTypeEnter = (e) => {
@@ -49,6 +50,7 @@ class VitalForm extends React.Component {
 		console.log("loading data")
 		console.log(x)
 		this.setState({temp: x.bodytemperature})
+		this.setState({temptype: x.temptype})
 		this.setState({bp: x.bloodpressure1})
 		this.setState({heart_rate: x.heartrate})
 		this.setState({heart: x.heartratefeeling})
@@ -65,6 +67,7 @@ class VitalForm extends React.Component {
             bloodpressure1: this.state.bp,
             oxygensaturation: parseFloat(this.state.oxygen),
             bodytemperature: parseFloat(this.state.temp),
+			temptype: this.state.temptype,
             fever1: this.state.fever,
 		}
 		const requestOptions = {
@@ -94,6 +97,7 @@ class VitalForm extends React.Component {
             bloodpressure1: this.state.bp,
             oxygensaturation: parseFloat(this.state.oxygen),
             bodytemperature: parseFloat(this.state.temp),
+			temptype: this.state.temptype,
             fever1: this.state.fever,
 		}
 		const requestOptions = {
@@ -134,7 +138,7 @@ class VitalForm extends React.Component {
 				} else {
 					this.updateSentData()
 				}
-				
+
 			}
 		}
 		return(
@@ -148,14 +152,23 @@ class VitalForm extends React.Component {
 			        	    </div>
 			        	    <div className="ma1">
 						        <p className="mt3 ml5 b mb1 gray gender">DO YOU THINK YOU HAVE A FEVER?</p>
-						      	<a onClick={this.onOptionClick} id="yes" name="fever" className="f6 ml5 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === true ? "rgb(136, 242, 216)" : "white", color: this.state.fever === true ? "white" : "black"}}>YES</a>
-						        <a onClick={this.onOptionClick} id="no" name="fever" className="f6 ml2 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === false ? "rgb(136, 242, 216)" : "white", color: this.state.fever === false ? "white" : "black"}}>NO</a>
+								<a onClick={this.onOptionClick} id="yes" name="fever" className="f6 ml5 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === true ? "rgb(127, 90, 179)" : "white", color: this.state.fever === true ? "white" : "black"}}>YES</a>
+								<a onClick={this.onOptionClick} id="no" name="fever" className="f6 ml2 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === false ? "rgb(127, 90, 179)" : "white", color: this.state.fever === false ? "white" : "black"}}>NO</a>
 					    	</div>
 					    	<div className="mt2 mb2">
 						        <p className="mt3 ml5 b pa0 mb0 gray gender">WHAT IS YOUR TEMPERATURE?</p>
 						        <div style={{display: "flex"}}>
 						        	<input id="temp" onChange={this.onTypeEnter} value={this.state.temp} type="number" min="0" className="mt3 ml5 mr2 bg-washed-green tc" style={{"height":"50px", "width":"15%","border":"none"}}/>
-						            <p className="mt4 f6 b ml2 gray">DEGREES </p>
+									<select onChange={(event) => {
+										if (event.target.value === "degree"){
+											this.setState({temptype: true})
+										} else {
+											this.setState({temptype: false})
+										}
+									}} id="temptype" name="temptype" className="mt3" style={{borderColor: "#777", color: "#777", borderWidth: 0.5}}>
+										<option style={{color: "#777"}} value="degree">DEGREES</option>
+										<option style={{color: "#777"}} value="ferh">FAHRENHEIT</option>
+									</select>
 						        </div>
 						    </div>
 						    <div className="mv2">
@@ -202,14 +215,23 @@ class VitalForm extends React.Component {
 			        	    </div>
 			        	    <div className="ma1 pa1">
 						        <p className="mt3 w-60 ml3 f5 b mb1 gray gender">DO YOU THINK YOU HAVE A FEVER?</p>
-						      	<a onClick={this.onOptionClick} id="yes" name="fever" className="f6 ml3 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === true ? "rgb(136, 242, 216)" : "white", color: this.state.fever === "true" ? "white" : "black"}}>YES</a>
-						        <a onClick={this.onOptionClick} id="no" name="fever" className="f6 ml3 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === false ? "rgb(136, 242, 216)" : "white", color: this.state.fever === "false" ? "white" : "black"}}>NO</a>
+						      	<a onClick={this.onOptionClick} id="yes" name="fever" className="f6 ml3 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === true ? "rgb(127, 90, 179)" : "white", color: this.state.fever === "true" ? "white" : "black"}}>YES</a>
+						        <a onClick={this.onOptionClick} id="no" name="fever" className="f6 ml3 shadow-2 mb4 mt3 dark-gray pointer ph3 pv2 dib" style={{background: this.state.fever === false ? "rgb(127, 90, 179)" : "white", color: this.state.fever === "false" ? "white" : "black"}}>NO</a>
 					    	</div>
 					    	<div className="mt2 mb2 pa1">
 						        <p className="mt3 ml3 b f5 w-70 pa0 mb0 gray gender">WHAT IS YOUR TEMPERATURE?</p>
 						        <div style={{display: "flex"}}>
 						        	<input id="temp" onChange={this.onTypeEnter} type="number" min="0" className="mt3 ml3 mr2 bg-washed-green tc" style={{"height":"50px", "width":"25%","border":"none"}}/>
-						            <p className="mt4 f6 b ml2 gray">DEGREES </p>
+									<select onChange={(event) => {
+										if (event.target.value === "degree"){
+											this.setState({temptype: true})
+										} else {
+											this.setState({temptype: false})
+										}
+									}} id="temptype" name="temptype" className="mt3" style={{borderColor: "#777", color: "#777", borderWidth: 0.5}}>
+										<option style={{color: "#777"}} value="degree">DEGREES</option>
+										<option style={{color: "#777"}} value="ferh">FAHRENHEIT</option>
+									</select>
 						        </div>
 						    </div>
 						    <div className="mv2 pa1">

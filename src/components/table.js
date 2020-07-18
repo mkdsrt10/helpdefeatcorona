@@ -167,6 +167,10 @@ class Table extends React.Component {
 		console.log(this.props)
 		return(
 			<div className="mt3 tl b--light-gray pa4 bg-white Avenir mobileOptimize" style={{"font-family":"Avenir", flex: 1}}>
+				<div>
+					<p className="f4 mt3 mb2 dark-gray">YOUR RECENT HISTORY</p>
+					<p className="mb3 gray">You can update the data by clicking on date below</p>
+				</div>
 			  <div className="calender-grid">
 			  	<div className="gray ph2 tc pv4 mr2 bg-washed-green br-pill" style={{height:"270px"}}>
 			  		<p onClick={this.onDateClick} id={this.state.dates[0]} className={`pa2 pointer mt0 ${(this.state.current == this.state.dates[0]) ? "b--light-gray shadow-2 purple ba br-100" : ""} mb1`}>{this.state.dates[0]}</p>
